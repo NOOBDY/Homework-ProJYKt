@@ -2,11 +2,11 @@ import json
 from getpass import getpass
 
 
-def setup():
+def setup(path="."):
     _id = input("學號: ")
     passwd = getpass("密碼: ")
 
-    with open("config.json", "w+") as file:
+    with open(f"{path}/config.json", "w+") as file:
         config = {}
 
         config["name"] = _id

@@ -2,6 +2,7 @@
 import json
 import sys
 from sys import exit  # i need to import exit or the binary will complain
+import pathlib
 
 import urllib3
 from requests.exceptions import ConnectTimeout, SSLError
@@ -46,12 +47,13 @@ def show_status(q_status: dict, t_status: dict) -> None:
 if __name__ == '__main__':
     args = sys.argv
 
+    exe_file_path = pathlib.Path(__file__).parent.absolute()
     if args[1] == "setup":
-        setup()
+        setup(exe_file_path)
         exit(1)
 
     try:
-        with open("./config.json", "r") as file:
+        with open(f"{exe_file_path}/config.json", "r") as file:
             login_data = json.load(file)
             base_url = login_data.pop("base_url")
 
