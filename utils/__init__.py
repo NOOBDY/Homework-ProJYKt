@@ -1,3 +1,4 @@
+from typing import Dict
 from requests import Session
 
 from .login import _login
@@ -22,9 +23,20 @@ class JykuoSession:
             exception_value,
             traceback)
 
-    login = _login
-    get = _get
-    get_question_statuses = _get_question_statuses
-    get_test_status = _get_test_status
-    submit = _submit
-    delete = _delete
+    def login(self, login_data: Dict[str, str]) -> None:
+        return _login(self, login_data)
+
+    def get(self, index: str) -> str:
+        return _get(self, index)
+    
+    def get_question_statuses(self) -> Dict[str, Dict[str, str]]:
+        return _get_question_statuses(self)
+
+    def get_test_status(self, id_: int, index: str) -> Dict[str, bool]:
+       return _get_test_status(self, id_, index)
+
+    def submit(self, index: str, filepath: str) -> None:
+        return _submit(self, index, filepath)
+
+    def delete(self, index: str) -> None:
+        return _delete(self, index)
