@@ -20,6 +20,6 @@ def _get_test_status(self, id_: int, index: str) -> Dict[str, bool]:
     cases = {}
     for test in list(soup.find_all("tr"))[1:]:
         case, status = [i.get_text().strip() for i in test.find_all("td")]
-        cases[case] = status != '測試失敗'
+        cases[case] = status == '通過測試'
 
     return cases
