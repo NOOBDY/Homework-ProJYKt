@@ -58,7 +58,7 @@ if __name__ == '__main__':
     exe_file_path = pathlib.Path(__file__).parent.absolute()
     if args[1] == "setup":
         setup(exe_file_path)
-        exit(1)
+        exit()
 
     try:
         with open(f"{exe_file_path}/config.json", "r") as file:
@@ -67,7 +67,7 @@ if __name__ == '__main__':
 
     except FileNotFoundError:
         print("Not yet setup yet")
-        exit(1)
+        exit()
 
     with JykuoSession(base_url) as s:
         try:
@@ -81,7 +81,7 @@ if __name__ == '__main__':
                     a = question_statuses[key]
                     print(
                         f"{key:>5}  {a['release_status']:<15}  {a['duo_date']:<17}  {a['submit_status']}")
-                exit(1)
+                exit()
 
             if args[1] == "get":
                 index = args[2].rjust(3, '0')
@@ -91,7 +91,7 @@ if __name__ == '__main__':
                 print(content)
                 print("-" * 50)
                 show_status(q_status, t_status)
-                exit(1)
+                exit()
 
             if args[1] == "submit":
                 index = args[2].rjust(3, '0')
@@ -103,7 +103,7 @@ if __name__ == '__main__':
                 t_status = s.get_test_status(login_data['name'], index)
                 print("-" * 50)
                 show_status(q_status, t_status)
-                exit(1)
+                exit()
 
         except ConnectTimeout:
             print("Not connected to school network")
