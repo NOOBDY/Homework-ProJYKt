@@ -2,6 +2,7 @@
 import json
 import sys
 from sys import exit  # i need to import exit or the binary will complain
+import pathlib
 
 import urllib3
 from requests.exceptions import ConnectTimeout, SSLError
@@ -45,19 +46,28 @@ def show_status(q_status: dict, t_status: dict) -> None:
 
 if __name__ == '__main__':
     args = sys.argv
+    if len(args) == 1:
+        print('''command description:
+    setup                       -- setup login information
+    get <index>                 -- get question context
+    get all                     -- get all question list
+    submit <index> <filepath>   -- submit file\
+        ''')
+        exit()
 
+    exe_file_path = pathlib.Path(__file__).parent.absolute()
     if args[1] == "setup":
-        setup()
-        exit(1)
+        setup(exe_file_path)
+        exit()
 
     try:
-        with open("./config.json", "r") as file:
+        with open(f"{exe_file_path}/config.json", "r") as file:
             login_data = json.load(file)
             base_url = login_data.pop("base_url")
 
     except FileNotFoundError:
         print("Not yet setup yet")
-        exit(1)
+        exit()
 
     with JykuoSession(base_url) as s:
         try:
@@ -71,7 +81,7 @@ if __name__ == '__main__':
                     a = question_statuses[key]
                     print(
                         f"{key:>5}  {a['release_status']:<15}  {a['duo_date']:<17}  {a['submit_status']}")
-                exit(1)
+                exit()
 
             if args[1] == "get":
                 index = args[2].rjust(3, '0')
@@ -81,7 +91,7 @@ if __name__ == '__main__':
                 print(content)
                 print("-" * 50)
                 show_status(q_status, t_status)
-                exit(1)
+                exit()
 
             if args[1] == "submit":
                 index = args[2].rjust(3, '0')
@@ -93,7 +103,7 @@ if __name__ == '__main__':
                 t_status = s.get_test_status(login_data['name'], index)
                 print("-" * 50)
                 show_status(q_status, t_status)
-                exit(1)
+                exit()
 
         except ConnectTimeout:
             print("Not connected to school network")
