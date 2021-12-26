@@ -47,11 +47,11 @@ def show_status(q_status: dict, t_status: dict) -> None:
 if __name__ == '__main__':
     args = sys.argv
     if len(args) == 1:
-        print('''
-        setup                       -- setup login information
-        get <index>                 -- get question context
-        get all                     -- get all question list
-        submit <index> <filepath>   -- submit file
+        print('''command description:
+    setup                       -- setup login information
+    get <index>                 -- get question context
+    get all                     -- get all question list
+    submit <index> <filepath>   -- submit file\
         ''')
         exit()
 
