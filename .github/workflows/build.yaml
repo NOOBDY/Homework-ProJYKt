@@ -73,5 +73,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./
-            #asset_name: *
-            #asset_content_type: application/gzip
+          asset_name: releases
+          asset_content_type: application/gzip
