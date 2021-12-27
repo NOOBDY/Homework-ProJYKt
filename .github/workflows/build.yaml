@@ -67,7 +67,8 @@ jobs:
 
       - name: Testing
         run: |
-          echo ${{ runner.os }}
+          ls ${{ runner.os }}-Release.* | head -n 1
+          ls ${{ runner.os }}-Release
           ls -la
 
       - name: Upload Release Asset
