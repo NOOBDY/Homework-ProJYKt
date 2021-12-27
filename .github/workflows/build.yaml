@@ -67,6 +67,7 @@ jobs:
 
       - name: Testing
         run: |
+          echo ${{ matrix.os }}
           ls -la
 
       - name: Upload Release Asset
