@@ -67,8 +67,10 @@ jobs:
 
       - name: Testing
         run: |
-          ls ${{ runner.os }}-Release.* | head -n 1
-          ls ${{ runner.os }}-Release
+          ARTIFACT_PATHNAME=$(ls ${{ runner.os }}-Release.* | head -n 1)
+          ARTIFACT_NAME=$(ls ${{ runner.os }}-Release)
+          echo "ARTIFACT_PATHNAME=$(ARTIFACT_PATHNAME)" >> $GITHUB_ENV
+          echo "ARTIFACT_NAME=$(ARTIFACT_NAME)" >> $GITHUB_ENV
           ls -la
 
       - name: Upload Release Asset
@@ -78,6 +80,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./${{ runner.os }}-Release.*
-          asset_name: ${{ runner.os }}-Release
+          asset_path: $ARTIFACT_PATHNAME
+          asset_name: $ARTIFACT_NAME
           asset_content_type: application/octet-stream
