@@ -30,18 +30,23 @@ jobs:
 
       - name: Build Binaries
         run: |
-          if: runner.os == 'Linux'
-            pyinstaller -F hwp.py --distpath linux-latest
-          if: runner.os == 'Windows'
-            pyinstaller -F hwp.py --distpath windows-latest
-          if: runner.os == 'macOS'
-            pyinstaller -F hwp.py --distpath macos-latest
+          if [ "$RUNNER_OS" == "Linux" ]; then
+            pyinstaller -F hwp.py --distpath linux-release
+            tar -czvf linux-release.tar.gz linux-release
+          elif [ "$RUNNER_OS" == "Windows" ]; then
+            pyinstaller -F hwp.py --distpath windows-release
+            tar -czvf windows-release.zip windows-release
+          elif [ "$RUNNER_OS" == "macOS" ]; then
+            pyinstaller -F hwp.py --distpath macos-release
+            tar -czvf macos-release.tar.gz macos-release
+          fi
+        shell: bash
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
           name: python-binary
-          path: ./dist/hwp
+          path: ./*-release
 
       - name: Download Artifact
         uses: actions/download-artifact@v1
@@ -69,4 +74,4 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: hwp
           asset_name: hwp
-          asset_content_type: application/octet-stream
+          asset_content_type: application/gzip
