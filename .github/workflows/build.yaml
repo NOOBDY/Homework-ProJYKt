@@ -31,28 +31,28 @@ jobs:
       - name: Build Binaries
         run: |
           if [ "$RUNNER_OS" == "Linux" ]; then
-            pyinstaller -F hwp.py --distpath linux-release
-            tar -czvf linux-release.tar.gz linux-release
+            pyinstaller -F hwp.py --distpath ${{ runner.os }}-Release
+            tar -czvf ${{ runner.os }}-Release.tar.gz ${{ runner.os }}-Release
           elif [ "$RUNNER_OS" == "Windows" ]; then
-            pyinstaller -F hwp.py --distpath windows-release
-            tar -czvf windows-release.zip windows-release
+            pyinstaller -F hwp.py --distpath ${{ runner.os }}-Release
+            tar -czvf ${{ runner.os }}-Release.zip ${{ runner.os }}-Release
           elif [ "$RUNNER_OS" == "macOS" ]; then
-            pyinstaller -F hwp.py --distpath macos-release
-            tar -czvf macos-release.tar.gz macos-release
+            pyinstaller -F hwp.py --distpath ${{ runner.os }}-Release
+            tar -czvf ${{ runner.os }}-Release.tar.gz ${{ runner.os }}-Release
           fi
         shell: bash
 
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: python-binary
-          path: ./*-release
+        #- name: Upload Artifact
+        #  uses: actions/upload-artifact@v2
+        #  with:
+        #    name: python-binary
+        #    path: ./-release
 
-      - name: Download Artifact
-        uses: actions/download-artifact@v1
-        with:
-          name: python-binary
-          path: ./
+        #- name: Download Artifact
+        #  uses: actions/download-artifact@v1
+        #  with:
+        #    name: python-binary
+        #    path: ./
 
       - name: Create Release
         id: create_release
@@ -67,7 +67,7 @@ jobs:
 
       - name: Testing
         run: |
-          echo ${{ matrix.os }}
+          echo ${{ runner.os }}
           ls -la
 
       - name: Upload Release Asset
@@ -77,6 +77,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./${{ matrix.config.os }}-release.*
-          asset_name: ${{ matrix.config.os }}-release
+          asset_path: ./${{ runner.os }}-Release.*
+          asset_name: ${{ runner.os }}-Release
           asset_content_type: application/octet-stream
