@@ -30,6 +30,7 @@ jobs:
 
       - name: Build Binaries
         run: |
+          echo {{ matrix.os }}
           pyinstaller -F hwp.py
 
       - name: Upload Release
