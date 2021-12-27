@@ -30,9 +30,7 @@ jobs:
 
       - name: Build Binaries
         run: |
-          pyinstaller -F setup.py
-          pyinstaller -F get.py
-          pyinstaller -F submit.py
+          pyinstaller -F hwp.py
 
       - name: Upload Release
         uses: actions/upload-artifact@v2
