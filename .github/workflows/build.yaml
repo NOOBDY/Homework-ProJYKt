@@ -2,13 +2,10 @@ name: Build
 
 #on:
 #  push:
-#    branches:
-#      - "master"
+#    tags:
+#      - "v*"
 
-on:
-  push:
-    tags:
-      - "v*"
+on: push
 
 jobs:
   build:
@@ -43,6 +40,7 @@ jobs:
           path: dist
 
       - name: Create Release
+        id: create-release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -61,4 +59,4 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./dist
           asset_name: dist
-            #asset_content_type:
+          asset_content_type: folder
