@@ -33,11 +33,17 @@ jobs:
           echo {{ matrix.os }}
           pyinstaller -F hwp.py
 
-      - name: Upload Release
+      - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
           name: python-binary
           path: dist
+
+      - name: Download Artifact
+        uses: actions/download-artifact@v1
+        with:
+          name: python-binary
+          path: ./
 
       - name: Create Release
         id: create_release
