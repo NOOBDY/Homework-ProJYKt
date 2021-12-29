@@ -93,6 +93,7 @@ if __name__ == '__main__':
                           "but won't upload your local file."\
                           "Do you wish to continue? [y/N]", end='')
                     if input() != "y":
+                        print("Aborting")
                         exit(0)
                 s.delete(index)
                 s.submit(index, file_path)
