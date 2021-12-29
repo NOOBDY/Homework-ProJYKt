@@ -96,6 +96,15 @@ if __name__ == '__main__':
             if args[1] == "submit":
                 index = args[2].rjust(3, '0')
                 file_path = args[3]
+                q_status = s.get_question_statuses()[index]
+                if q_status['release_status'] == "Closed" :
+                    print("The question has closed, "\
+                          "submitting the file anyways will delete the uploaded file "\
+                          "but won't upload your local file."\
+                          "Do you wish to continue? [y/N]", end='')
+                    if input() != "y":
+                        print("Aborting")
+                        exit(0)
                 s.delete(index)
                 s.submit(index, file_path)
                 print("Submit success.")
