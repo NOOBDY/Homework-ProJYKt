@@ -1,12 +1,13 @@
 import json
 from getpass import getpass
+from os import wait
 
 
-def setup(config_path: str):
+def setup():
     _id = input("學號: ")
     passwd = getpass("密碼: ")
 
-    with open(f"{config_path}/config.json", "w+") as file:
+    with open("./config.json", "w+") as file:
         config = {}
 
         config["name"] = _id

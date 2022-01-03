@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 import json
 import sys
-from sys import exit  # i need to import exit or the binary will complain
-import pathlib
+from sys import exit, path  # i need to import exit or the binary will complain
 
 import urllib3
 from requests.exceptions import ConnectTimeout, SSLError
@@ -55,13 +54,12 @@ if __name__ == '__main__':
         ''')
         exit()
 
-    exe_file_path = pathlib.Path(__file__).parent.absolute()
     if args[1] == "setup":
-        setup(exe_file_path)
+        setup()
         exit()
 
     try:
-        with open(f"{exe_file_path}/config.json", "r") as file:
+        with open("./config.json", "r") as file:
             login_data = json.load(file)
             base_url = login_data.pop("base_url")
 
