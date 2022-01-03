@@ -11,8 +11,8 @@ def _get(self, index: str) -> str:
 
     soup = BeautifulSoup(r.content.decode(), "html5lib")
     res = soup.find(
-        "span",
-        style="font-family:標楷體; color:black; behavior:slide; word-wrap:break-word; word-break:normal; font-weight:bold; font-size:medium;")
+        "div",
+        class_="ui message brown")
 
     if res:
         context = ""
