@@ -1,6 +1,5 @@
 import json
 from getpass import getpass
-from os import wait
 
 
 def setup():

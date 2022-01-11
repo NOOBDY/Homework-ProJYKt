@@ -40,7 +40,7 @@ def _get_question_statuses(self) -> Dict[str, Dict[str, str]]:
 
         question_statuses[info[2]] = {
             "release_status": release_status,
-            "duo_date": info[3] if release_status != "Not Open Yet" else "Not Open Yet",
+            "due_date": info[3] if release_status != "Not Open Yet" else "Not Open Yet",
             "submit_status": submit_status,
         }
     return question_statuses
