@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 import json
 import sys
-from sys import exit, path  # i need to import exit or the binary will complain
+from sys import exit  # i need to import exit or the binary will complain
+from typing import Dict, Tuple
 
 import urllib3
 from requests.exceptions import ConnectTimeout, SSLError
@@ -12,6 +13,7 @@ from utils.setup import setup
 
 urllib3.disable_warnings(category=InsecureRequestWarning)
 
+
 class Colors:
     DEFAULT = "\033[0m"
     GREEN = "\033[92m"
@@ -19,26 +21,32 @@ class Colors:
     RED = "\033[91m"
 
 
-def show_status(q_status: dict, t_status: dict) -> None:
+def show_status(question_status: dict, test_status: Dict[str, Tuple[bool, str]]) -> None:
     r_scolor =\
-        Colors.GREEN if q_status['release_status'] == "Open" else\
-        Colors.YELLOW if q_status['release_status'] == "Preparing" else\
+        Colors.GREEN if question_status['release_status'] == "Open" else\
+        Colors.YELLOW if question_status['release_status'] == "Preparing" else\
         Colors.RED
 
     print(
-        f"Realese Status: {r_scolor}{q_status['release_status']}{Colors.DEFAULT}, Due: {q_status['duo_date']}")
+        f"Realese Status: {r_scolor}{question_status['release_status']}{Colors.DEFAULT}, Due: {question_status['due_date']}")
     print("Test Status:")
-    if len(t_status) != 0:
+    if len(test_status) != 0:
         passed = 0
         failed = 0
-        for case in t_status:
-            if t_status[case]:
+
+        for case in test_status:
+            if test_status[case][0]:
                 print(f" Case {case} {Colors.GREEN}v{Colors.DEFAULT}")
                 passed += 1
+
             else:
                 print(f" Case {case} {Colors.RED}x{Colors.DEFAULT}")
+                print(f"  {test_status[case][1]}".replace(":", ":\n").replace("\n", "\n    "))
                 failed += 1
-        print(f"{Colors.GREEN}{passed} passed, {Colors.RED}{failed} failed, {Colors.DEFAULT}{len(t_status)} total")
+            
+
+        print(f"{Colors.GREEN}{passed} passed, {Colors.RED}{failed} failed, {Colors.DEFAULT}{len(test_status)} total")
+
     else:
         print(" Not Submit Yet")
 
@@ -74,31 +82,31 @@ if __name__ == '__main__':
             if f"{args[1]} {args[2]}" == "get all":
                 question_statuses = s.get_question_statuses()
                 print(
-                    f"Index  Realease Status  {'Duo Date':<17}  Submit Status")
+                    f"Index  Realease Status  {'Due Date':<17}  Submit Status")
                 for key in question_statuses:
                     a = question_statuses[key]
                     print(
-                        f"{key:>5}  {a['release_status']:<15}  {a['duo_date']:<17}  {a['submit_status']}")
+                        f"{key:>5}  {a['release_status']:<15}  {a['due_date']:<17}  {a['submit_status']}")
                 exit()
 
             if args[1] == "get":
                 index = args[2].rjust(3, '0')
                 content = s.get(index)
-                q_status = s.get_question_statuses()[index]
-                t_status = s.get_test_status(login_data['name'], index)
+                questions_status = s.get_question_statuses()[index]
+                test_status = s.get_test_status(login_data['name'], index)
                 print(content)
                 print("-" * 50)
-                show_status(q_status, t_status)
+                show_status(questions_status, test_status)
                 exit()
 
             if args[1] == "submit":
                 index = args[2].rjust(3, '0')
                 file_path = args[3]
-                q_status = s.get_question_statuses()[index]
-                if q_status['release_status'] == "Closed" :
-                    print("The question has closed, "\
-                          "submitting the file anyways will delete the uploaded file "\
-                          "but won't upload your local file."\
+                questions_status = s.get_question_statuses()[index]
+                if questions_status['release_status'] == "Closed":
+                    print("The question has closed, "
+                          "submitting the file anyways will delete the uploaded file "
+                          "but won't upload your local file."
                           "Do you wish to continue? [y/N]", end='')
                     if input() != "y":
                         print("Aborting")
@@ -106,10 +114,10 @@ if __name__ == '__main__':
                 s.delete(index)
                 s.submit(index, file_path)
                 print("Submit success.")
-                q_status = s.get_question_statuses()[index]
-                t_status = s.get_test_status(login_data['name'], index)
+                questions_status = s.get_question_statuses()[index]
+                test_status = s.get_test_status(login_data['name'], index)
                 print("-" * 50)
-                show_status(q_status, t_status)
+                show_status(questions_status, test_status)
                 exit()
 
         except ConnectTimeout:

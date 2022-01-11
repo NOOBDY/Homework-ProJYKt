@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, Tuple
 from requests import Session
 
 from .login import _login
@@ -32,7 +32,7 @@ class JykuoSession:
     def get_question_statuses(self) -> Dict[str, Dict[str, str]]:
         return _get_question_statuses(self)
 
-    def get_test_status(self, id_: int, index: str) -> Dict[str, bool]:
+    def get_test_status(self, id_: int, index: str) -> Dict[str, Tuple[bool, str]]:
        return _get_test_status(self, id_, index)
 
     def submit(self, index: str, filepath: str) -> None:
