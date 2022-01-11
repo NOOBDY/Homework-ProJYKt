@@ -1,0 +1,39 @@
+<TextInput>:
+    font_name:"./utils/msjh.ttc"
+<Label>:
+    color: 1, 1, 1
+    font_name:"./utils/msjh.ttc"
+<Button>:
+    font_name:"./utils/msjh.ttc"
+<Popup>:
+    font_name:"./utils/msjh.ttc"
+
+<SetupPopup>
+    title : "Setup User Data"
+    auto_dismiss : True
+    size_hint_x : 0.6
+    size_hint_y : 0.45
+    GridLayout:
+        cols:1
+        GridLayout:
+            cols:2
+            size_hint_y:0.3
+            Label:
+                size_hint_x:0.4
+                text:"Account:"
+            TextInput:
+                id:acc
+        GridLayout:
+            cols:2
+            size_hint_y:0.3
+            Label:
+                size_hint_x:0.4
+                text:"Password:"
+            TextInput:
+                id:psw
+        Button:
+            id:setup
+            text:"Submit"
+            size_hint_y:0.2
+            on_press:
+                root.genUserData(acc.text, psw.text, True)

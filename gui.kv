@@ -1,0 +1,120 @@
+<TextInput>:
+    font_name:"./utils/msjh.ttc"
+<Label>:
+    color: 1, 1, 1
+    font_name:"./utils/msjh.ttc"
+<Button>:
+    font_name:"./utils/msjh.ttc"
+<Popup>:
+    font_name:"./utils/msjh.ttc"
+
+<mainWindow>
+    cols:2
+    id:mw
+    GridLayout:
+        cols:1
+        Label:
+            size_hint_y:0.1
+            text:"Description"
+        TextInput:
+            id:content
+            size_hint_x:0.7
+    GridLayout:
+        size_hint_x:0.3
+        cols:1
+        Button:
+            id:reSetup
+            size_hint_y:0.1
+            text:"Re-generate User Data"
+            on_press:
+                root.generateUserData()
+        GridLayout:
+            size_hint_y:0.1
+            cols:2
+            TextInput:
+                size_hint_x:0.7
+                id:index
+            Button:
+                id:Search
+                text:"Search"
+                size_hint_x:0.3
+                on_press: root.search()
+        Label:
+            text:"Test Result:"
+            size_hint_y:0.1
+        TextInput:
+            id:testResult
+            size_hint_y:0.55
+        Button:
+            id:fc
+            text:"繳交作業"
+            size_hint_y:0.15
+            on_press:
+                root.chooseFile()
+
+
+<SetupPopup>
+    title : "Setup User Data"
+    auto_dismiss : True
+    size_hint_x : 0.6
+    size_hint_y : 0.8
+    GridLayout:
+        cols:1
+        GridLayout:
+            cols:2
+            size_hint_y:0.3
+            Label:
+                size_hint_x:0.4
+                text:"Account:"
+            TextInput:
+                id:acc
+        GridLayout:
+            cols:2
+            size_hint_y:0.3
+            Label:
+                size_hint_x:0.4
+                text:"Password:"
+            TextInput:
+                id:psw
+        GridLayout:
+            cols:2
+            size_hint_y:0.15
+            Button:
+                id:cancelSetup
+                size_hint_x:0.3
+                text:"取消"
+                on_press:
+                    root.dismiss()
+            Button:
+                id:setup
+                size_hint_x:0.7
+                text:"Submit"
+                on_press:
+                    root.genUserData(acc.text, psw.text)
+
+<FileChooser>
+    size_hint_x:0.9
+    size_hint_y:0.9
+    BoxLayout:
+        orientation:"vertical"
+        FileChooserListView:
+            id:fc
+            filters:"*.py"
+            filter_dirs:True
+            path:"./"
+            on_selection: root.select(*args)
+        GridLayout:
+            cols:2
+            size_hint_y:0.1
+            Button:
+                size_hint_x:0.5
+                text:"cancel"
+                on_press:
+                    root.dismiss()
+            Button:
+                id:con
+                size_hint_x:0.5
+                size_hint_y:0.2
+                text:"繳交"
+                on_press:
+                    root.sel(fc.path, fc.selection)
