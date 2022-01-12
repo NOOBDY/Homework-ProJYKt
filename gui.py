@@ -3,6 +3,7 @@ import json
 from time import sleep
 
 from kivy.app import App
+from kivy.lang import Builder
 from kivy.uix.button import Button
 from kivy.uix.screenmanager import ScreenManager
 from kivy.uix.gridlayout import GridLayout
@@ -22,12 +23,12 @@ class SetupPopup(Popup):
     def __init__(self, **kwargs):
         super(SetupPopup, self).__init__(**kwargs)
 
-    def genUserData(self, acc, psw, firstTime = False):
+    def genUserData(self, acc, psw, firstTime=False):
         if acc == psw == '':
             return
         setup(acc, psw)
         if firstTime:
-            print('\n'*10)
+            print('\n' * 10)
             print("Please Re-Run The Program")
         self.dismiss()
         exit(0)
@@ -50,11 +51,15 @@ class FileChooser(Popup):
         print(temp)
         s.delete(currentIndex)
         s.submit(currentIndex, temp)
-        self.dismiss()
+        fonther = App._running_app.root
+        res = s.get_test_status(login_data["name"], currentIndex)
+        fonther.ids.testResult.text = ''
+        for i in res.values():
+            succeed = str(i[0])
+            testResult = i[1]
+            fonther.ids.testResult.text += succeed + " || " + testResult[14:] + '\n'
 
-        # s.get_test_status() TODO: await nobody debug
-        # currentIndex be like "012"
-        # filename[0] be like "D:\0.0\Homework-ProJYKt\hwp.py"
+        self.dismiss()
 
 
 class mainWindow(GridLayout):
@@ -73,7 +78,12 @@ class mainWindow(GridLayout):
         global currentIndex
         currentIndex = self.ids.index.text.rjust(3, '0')
         self.ids.content.text = s.get(currentIndex)
-        # self.ids.testResult.text = s.get_test_status #TODO: await nobody to debug
+        res = s.get_test_status(login_data["name"], currentIndex)
+        self.ids.testResult.text = ''
+        for i in res.values():
+            succeed = str(i[0])
+            testResult = i[1]
+            self.ids.testResult.text += succeed + " || " + testResult[14:] + '\n'
 
 
 class guiApp(App):
@@ -102,8 +112,12 @@ if __name__ == "__main__":
             base_url = login_data.pop("base_url")
     except:
         setupApp().run()
+        Builder.load_file("./setup.kv")
+        # comment the line above to avoid reading .kv file twice
         print("Please Re-Run the Program")
     with JykuoSession(base_url) as s:
         currentIndex = ''
+        Builder.load_file("./gui.kv")
+        # comment the line above to avoid reading .kv file twice
         s.login(login_data)
         guiApp().run()
