@@ -93,7 +93,7 @@ if __name__ == '__main__':
                 exit()
 
             if args[1] == "get":
-                index = args[2].rjust(3, '0')
+                index = args[2].rjust(2, '0')
                 content = s.get(index)
                 questions_status = s.get_question_statuses()[index]
                 test_status = s.get_test_status(login_data['name'], index)
@@ -103,7 +103,7 @@ if __name__ == '__main__':
                 exit()
 
             if args[1] == "submit":
-                index = args[2].rjust(3, '0')
+                index = args[2].rjust(2, '0')
                 file_path = args[3]
                 questions_status = s.get_question_statuses()[index]
                 if questions_status['release_status'] == "Closed":
