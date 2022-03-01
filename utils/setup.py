@@ -8,10 +8,7 @@ def listOptions():
 
     try:
         r = Session().get(f"https://140.124.181.36/upload/Login", verify=False, timeout=1)
-    except:
-        print("    Not connected to school network")
-        return
-    if not r.ok:
+    except ConnectTimeout:
         print("    Not connected to school network")
         return
 
