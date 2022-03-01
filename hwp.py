@@ -81,16 +81,19 @@ if __name__ == '__main__':
 
             if f"{args[1]} {args[2]}" == "get all":
                 question_statuses = s.get_question_statuses()
-                print(
-                    f"Index  Realease Status  {'Due Date':<17}  Submit Status")
+                print(f"Index  Realease Status  Due Date          Submit Status")
                 for key in question_statuses:
                     a = question_statuses[key]
-                    print(
-                        f"{key:>5}  {a['release_status']:<15}  {a['due_date']:<17}  {a['submit_status']}")
+                    print(f"{key:<5}", end="  ")
+                    print(f"{Colors.GREEN if a['release_status'] == 'Open' else Colors.DEFAULT}" \
+                          f"{a['release_status']:<15}{Colors.DEFAULT}", end="  ")
+                    print(f"{a['due_date']:<16}", end="  ")
+                    print(f"{Colors.GREEN if a['submit_status'] == 'Pass' else Colors.RED if a['submit_status'] == 'Fail' else Colors.DEFAULT}" \
+                          f"{a['submit_status']}{Colors.DEFAULT}")
                 exit()
 
             if args[1] == "get":
-                index = args[2].rjust(3, '0')
+                index = args[2].rjust(2, '0')
                 content = s.get(index)
                 questions_status = s.get_question_statuses()[index]
                 test_status = s.get_test_status(login_data['name'], index)
@@ -100,7 +103,7 @@ if __name__ == '__main__':
                 exit()
 
             if args[1] == "submit":
-                index = args[2].rjust(3, '0')
+                index = args[2].rjust(2, '0')
                 file_path = args[3]
                 questions_status = s.get_question_statuses()[index]
                 if questions_status['release_status'] == "Closed":

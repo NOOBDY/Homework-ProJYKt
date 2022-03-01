@@ -23,7 +23,7 @@ def _submit(self, index: str, filepath: str) -> None:
         print("Can't find specified file")
         exit(1)
 
-    filename = f"{json.load(open('config.json'))['name']}_{index}_{round(time() * 1000)}.py"
+    filename = f"{json.load(open('config.json'))['name']}_{index}_{round(time() * 1000)}.c"
 
     url = f"{base_url}/upLoadHw?hwId={index}&l=Python"
     # after digging around i discovered i need to have a GET request first? WTF???
@@ -36,7 +36,7 @@ def _submit(self, index: str, filepath: str) -> None:
             "hwFile": (
                 filename,
                 file,
-                "text/x-python")}).json()
+                "text/x-c")}).json()
 
     if not post_response["success"]:
         raise Exception(post_response["errorMSg"])
