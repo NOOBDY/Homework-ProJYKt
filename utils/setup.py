@@ -2,10 +2,13 @@ import json
 from getpass import getpass
 
 
-def setup():
-    _id = input("學號: ")
-    passwd = getpass("密碼: ")
-
+def setup(id=-1, psw=-1):
+    if id == psw == -1:
+        _id = input("學號: ")
+        passwd = getpass("密碼: ")
+    else:
+        _id = id
+        passwd = psw
     with open("./config.json", "w+") as file:
         config = {}
 
