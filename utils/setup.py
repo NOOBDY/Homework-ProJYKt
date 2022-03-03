@@ -2,6 +2,7 @@ import json
 from getpass import getpass
 from bs4 import BeautifulSoup
 from requests import Session
+from requests.exceptions import ConnectTimeout
 
 def listOptions():
     print("Option of Courses:")
