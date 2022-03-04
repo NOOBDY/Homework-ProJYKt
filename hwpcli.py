@@ -120,7 +120,7 @@ class HwpShell(Cmd):
         show_status(questions_status, test_status)
         
     def do_setup(self, args):
-        ...
+        setup()
 
     def do_quit(self, args):
         raise SystemExit
@@ -143,12 +143,12 @@ class HwpShell(Cmd):
 if __name__ == "__main__":
     try:
         login_data, base_url = loadConfig()
-    except ConfigNotFound:
+    except FileNotFoundError:
         login_data = None
 
     if len(argv) != 1:
         if argv[1] == 'setup':
-            HwpShell.onecmd('setup')
+            HwpShell().onecmd('setup')
         elif not login_data:
             print("Not yet setup yet")
         else:
@@ -162,7 +162,8 @@ if __name__ == "__main__":
 
     while True:
         if not login_data:
-            HwpShell.onecmd('setup')
+            HwpShell().onecmd('setup')
+            login_data, base_url = loadConfig()
         shell = HwpShell()
         shell.session = JykuoSession(base_url)
         shell.session.login(login_data)
