@@ -1,11 +1,9 @@
 #!/usr/bin/env python
 import json
-import sys
 from typing import Dict, Tuple
+from sys import argv, exit
 
-from sys import exit  # i need to import exit or the binary will complain
-from sys import argv 
-import cmd
+from cmd import Cmd
 
 import urllib3
 from requests.exceptions import ConnectTimeout, SSLError
