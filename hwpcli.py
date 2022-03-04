@@ -112,6 +112,7 @@ class HwpShell(Cmd):
                   "Do you wish to continue? [y/N]", end='')
             if input() != "y":
                 print("Aborting")
+                return
         self.session.delete(index)
         self.session.submit(index, file_path)
         print("Submit success.")
