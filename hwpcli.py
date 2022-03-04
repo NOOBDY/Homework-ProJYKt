@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import json
 from typing import Dict, Tuple
 from sys import argv, exit
