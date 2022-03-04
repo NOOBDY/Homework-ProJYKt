@@ -159,7 +159,6 @@ if __name__ == "__main__":
             shell.session.login(login_data)
             shell.student_id = login_data['name']
             shell.onecmd(' '.join(argv[1:]))
-            shell.session.close()
         exit()
 
     while True:
@@ -171,5 +170,4 @@ if __name__ == "__main__":
         shell.session.login(login_data)
         shell.student_id = login_data['name']
         shell.cmdloop()
-        shell.session.close()
 
