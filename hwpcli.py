@@ -3,6 +3,10 @@ from typing import Dict, Tuple
 from sys import argv, exit
 from os import path
 
+import rlcompleter
+import readline
+readline.parse_and_bind("tab: complete")
+
 from cmd import Cmd
 
 import urllib3
